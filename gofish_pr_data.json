@@ -1,0 +1,236 @@
+[
+  {
+    "PRNumber": 466,
+    "Author": "joeyberkovitz",
+    "State": "closed",
+    "CreatedAt": "2025-09-26T17:13:23Z",
+    "ClosedAt": "2025-10-01T15:38:01Z",
+    "MergedAt": "2025-10-01T15:38:00Z",
+    "FirstReviewTime": "2025-10-01T15:37:22Z",
+    "TotalLifetime": 426277000000000,
+    "TimeToFirstReview": 426239000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 1,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 465,
+    "Author": "iamsli",
+    "State": "closed",
+    "CreatedAt": "2025-09-23T17:25:56Z",
+    "ClosedAt": "2025-09-23T17:29:16Z",
+    "MergedAt": "2025-09-23T17:29:16Z",
+    "FirstReviewTime": "2025-09-23T17:28:28Z",
+    "TotalLifetime": 200000000000,
+    "TimeToFirstReview": 152000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 0,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 464,
+    "Author": "smiller248",
+    "State": "closed",
+    "CreatedAt": "2025-09-20T22:05:05Z",
+    "ClosedAt": "2025-09-21T07:54:49Z",
+    "MergedAt": "2025-09-21T07:54:49Z",
+    "FirstReviewTime": "2025-09-21T07:54:43Z",
+    "TotalLifetime": 35384000000000,
+    "TimeToFirstReview": 35378000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 0,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 463,
+    "Author": "smiller248",
+    "State": "closed",
+    "CreatedAt": "2025-09-20T21:57:46Z",
+    "ClosedAt": "2025-09-21T07:55:15Z",
+    "MergedAt": "2025-09-21T07:55:15Z",
+    "FirstReviewTime": "2025-09-21T07:55:11Z",
+    "TotalLifetime": 35849000000000,
+    "TimeToFirstReview": 35845000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 0,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 462,
+    "Author": "bbrown-cw",
+    "State": "closed",
+    "CreatedAt": "2025-09-19T19:05:02Z",
+    "ClosedAt": "2025-09-23T19:01:56Z",
+    "MergedAt": "0001-01-01T00:00:00Z",
+    "FirstReviewTime": "0001-01-01T00:00:00Z",
+    "TotalLifetime": 345414000000000,
+    "TimeToFirstReview": 0,
+    "Reviewers": null,
+    "CommentsCount": 0,
+    "IsMerged": false
+  },
+  {
+    "PRNumber": 461,
+    "Author": "smiller248",
+    "State": "closed",
+    "CreatedAt": "2025-09-18T15:53:08Z",
+    "ClosedAt": "2025-09-18T16:18:26Z",
+    "MergedAt": "2025-09-18T16:18:25Z",
+    "FirstReviewTime": "2025-09-18T16:18:20Z",
+    "TotalLifetime": 1517000000000,
+    "TimeToFirstReview": 1512000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 0,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 460,
+    "Author": "smiller248",
+    "State": "closed",
+    "CreatedAt": "2025-09-17T21:26:54Z",
+    "ClosedAt": "2025-09-17T21:39:45Z",
+    "MergedAt": "2025-09-17T21:39:45Z",
+    "FirstReviewTime": "2025-09-17T21:39:36Z",
+    "TotalLifetime": 771000000000,
+    "TimeToFirstReview": 762000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 0,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 459,
+    "Author": "smiller248",
+    "State": "closed",
+    "CreatedAt": "2025-09-17T21:14:24Z",
+    "ClosedAt": "2025-09-18T15:50:57Z",
+    "MergedAt": "0001-01-01T00:00:00Z",
+    "FirstReviewTime": "0001-01-01T00:00:00Z",
+    "TotalLifetime": 66993000000000,
+    "TimeToFirstReview": 0,
+    "Reviewers": null,
+    "CommentsCount": 2,
+    "IsMerged": false
+  },
+  {
+    "PRNumber": 458,
+    "Author": "dukovac",
+    "State": "closed",
+    "CreatedAt": "2025-09-10T18:19:13Z",
+    "ClosedAt": "2025-09-10T19:31:05Z",
+    "MergedAt": "2025-09-10T19:31:05Z",
+    "FirstReviewTime": "2025-09-10T19:30:37Z",
+    "TotalLifetime": 4312000000000,
+    "TimeToFirstReview": 4284000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 2,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 457,
+    "Author": "dependabot[bot]",
+    "State": "closed",
+    "CreatedAt": "2025-09-08T16:27:13Z",
+    "ClosedAt": "2025-09-08T16:29:03Z",
+    "MergedAt": "2025-09-08T16:29:03Z",
+    "FirstReviewTime": "2025-09-08T16:28:57Z",
+    "TotalLifetime": 110000000000,
+    "TimeToFirstReview": 104000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 0,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 456,
+    "Author": "ungureanuvladvictor",
+    "State": "closed",
+    "CreatedAt": "2025-08-26T18:34:32Z",
+    "ClosedAt": "2025-08-26T19:24:30Z",
+    "MergedAt": "2025-08-26T19:24:29Z",
+    "FirstReviewTime": "2025-08-26T19:24:22Z",
+    "TotalLifetime": 2997000000000,
+    "TimeToFirstReview": 2990000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 1,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 454,
+    "Author": "dependabot[bot]",
+    "State": "closed",
+    "CreatedAt": "2025-08-11T23:38:18Z",
+    "ClosedAt": "2025-08-12T08:40:27Z",
+    "MergedAt": "2025-08-12T08:40:27Z",
+    "FirstReviewTime": "0001-01-01T00:00:00Z",
+    "TotalLifetime": 32529000000000,
+    "TimeToFirstReview": 0,
+    "Reviewers": null,
+    "CommentsCount": 0,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 452,
+    "Author": "joeyberkovitz",
+    "State": "closed",
+    "CreatedAt": "2025-08-07T15:58:52Z",
+    "ClosedAt": "2025-08-07T18:51:11Z",
+    "MergedAt": "2025-08-07T18:51:11Z",
+    "FirstReviewTime": "2025-08-07T18:51:00Z",
+    "TotalLifetime": 10339000000000,
+    "TimeToFirstReview": 10328000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 5,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 449,
+    "Author": "Muyk33rus",
+    "State": "closed",
+    "CreatedAt": "2025-08-05T07:27:54Z",
+    "ClosedAt": "2025-08-06T17:11:14Z",
+    "MergedAt": "2025-08-06T17:11:14Z",
+    "FirstReviewTime": "2025-08-05T10:54:02Z",
+    "TotalLifetime": 121400000000000,
+    "TimeToFirstReview": 12368000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 1,
+    "IsMerged": true
+  },
+  {
+    "PRNumber": 448,
+    "Author": "thespags",
+    "State": "closed",
+    "CreatedAt": "2025-07-28T22:49:55Z",
+    "ClosedAt": "2025-07-29T17:50:31Z",
+    "MergedAt": "2025-07-29T17:50:31Z",
+    "FirstReviewTime": "2025-07-29T14:43:06Z",
+    "TotalLifetime": 68436000000000,
+    "TimeToFirstReview": 57191000000000,
+    "Reviewers": [
+      "stmcginnis"
+    ],
+    "CommentsCount": 1,
+    "IsMerged": true
+  }
+]
