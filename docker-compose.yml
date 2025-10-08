@@ -1,0 +1,20 @@
+services:
+  ms-victoria-metrics:
+    image: victoriametrics/victoria-metrics:v1.114.0
+    container_name: ms-victoria-metrics
+    ports:
+      - "8428:8428"
+    volumes:
+      - vm_data:/victoria-metrics-data
+    command:
+      - "-storageDataPath=/victoria-metrics-data"
+      - "-retentionPeriod=30d"
+    restart: unless-stopped
+    networks: [ms]
+
+volumes:
+  vm_data:
+
+networks:
+  ms:
+    driver: bridge
