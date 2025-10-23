@@ -2,13 +2,13 @@ package cli
 
 import (
 	_ "embed"
-	"errors"
-	"fmt"
-	"log"
+	manager2 "metrics-scrapper/internal/manager"
+	"metrics-scrapper/internal/vmdb"
+	"net/http"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/exp/slog"
 
-	"metrics-scrapper/internal/analyzer"
 	"metrics-scrapper/internal/github"
 )
 
@@ -41,34 +41,26 @@ func newRunCmd() *cobra.Command {
 
 // Entry point of RunCmd (i.e. `metrics-scraper run`).
 func run(_ *cobra.Command) error {
-	fmt.Println("=== Gofish PR project analysis ===")
+	var vmdbURLProvider vmdb.URLProvider
+
+	vmdbURLProvider = &vmdb.SingleNodeURL{
+		VMURL: "http://localhost:8428",
+	}
+
+	logger := slog.Default()
 
 	client := github.NewClient(cfg)
 
-	prs, err := client.GetAllPullRequests()
-	if err != nil {
-		log.Fatalf("Error when receiving PR: %v", err)
-	}
+	exporter := vmdb.NewVMDBExporter(
+		&http.Client{}, //nolint:exhaustruct
+		vmdbURLProvider,
+		logger,
+		"1y",
+	)
 
-	fmt.Printf("Found %d pull requests\n", len(prs))
+	manager := manager2.NewMetricManager(exporter, client)
 
-	if len(prs) == 0 {
-		fmt.Println("No PR was found for analysis.")
-		return errors.New("no PR found for analysis.")
-	}
+	err := manager.ScrapeAndPush(cfg)
 
-	metrics, err := analyzer.CollectPRMetrics(client, prs)
-	if err != nil {
-		log.Fatalf("Error when collecting metrics: %v", err)
-	}
-
-	result := analyzer.AnalyzeData(metrics)
-
-	analyzer.PrintAnalysisResults(result)
-
-	if err := analyzer.SaveRawData(metrics); err != nil {
-		log.Printf("Error saving data: %v", err)
-	}
-
-	return nil
+	return err
 }
