@@ -6,23 +6,35 @@ import (
 	"strconv"
 )
 
+type RepoConfig struct {
+	Owner string
+	Repo  string
+}
+
 type Config struct {
-	GitHubToken string
-	Owner       string
-	Repo        string
-	MaxPages    int
-	DelayMS     int
-	PerPage     int
+	GitHubToken  string
+	Repositories []RepoConfig
+	MaxPages     int
+	DelayMS      int
+	PerPage      int
 }
 
 func LoadConfig() *Config {
+	repos := []RepoConfig{
+		{Owner: "stmcginnis", Repo: "gofish"},
+		{Owner: "golang", Repo: "go"},
+		{Owner: "ipmitool", Repo: "ipmitool"},
+		{Owner: "docker", Repo: "compose"},
+		{Owner: "VictoriaMetrics", Repo: "VictoriaMetrics"},
+		{Owner: "prometheus", Repo: "prometheus"},
+	}
+
 	cfg := &Config{
-		GitHubToken: getGitHubToken(),
-		Owner:       getEnv("GITHUB_OWNER", "stmcginnis"),
-		Repo:        getEnv("GITHUB_REPO", "gofish"),
-		MaxPages:    getEnvAsInt("MAX_PAGES", 3),
-		DelayMS:     getEnvAsInt("DELAY_MS", 500),
-		PerPage:     getEnvAsInt("PER_PAGE", 5),
+		GitHubToken:  getGitHubToken(),
+		Repositories: repos,
+		MaxPages:     getEnvAsInt("MAX_PAGES", 3),
+		DelayMS:      getEnvAsInt("DELAY_MS", 1000),
+		PerPage:      getEnvAsInt("PER_PAGE", 5),
 	}
 
 	if cfg.GitHubToken == "" {

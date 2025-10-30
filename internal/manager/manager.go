@@ -31,41 +31,76 @@ func NewMetricManager(
 }
 
 func (m *MetricManager) ScrapeAndPush(cfg *config.Config) error {
-	fmt.Println("=== Gofish PR project analysis ===")
+	fmt.Println("=== PR analysis for multiple repositories ===")
 
-	prs, err := m.GithubClient.GetAllPullRequests()
-	if err != nil {
-		log.Fatalf("Error when receiving PR: %v", err)
+	allResults := make(map[string]analyzer.RepositoryResult)
+
+	for i, repo := range cfg.Repositories {
+		fmt.Printf("\n=== Repository %d/%d: %s/%s ===\n",
+			i+1, len(cfg.Repositories), repo.Owner, repo.Repo)
+
+		prs, err := m.GithubClient.GetAllPullRequests(repo.Owner, repo.Repo)
+		if err != nil {
+			log.Fatalf("Error when receiving PR: %v", err)
+		}
+
+		fmt.Printf("Found %d pull requests\n", len(prs))
+
+		if len(prs) == 0 {
+			fmt.Println("No PR was found for analysis.")
+			return errors.New("no PR found for analysis.")
+		}
+
+		metrics, err := analyzer.CollectPRMetrics(m.GithubClient, repo.Owner, repo.Repo, prs)
+		if err != nil {
+			log.Fatalf("Error when collecting metrics: %v", err)
+		}
+
+		result := analyzer.AnalyzeData(metrics)
+
+		repoKey := fmt.Sprintf("%s/%s", repo.Owner, repo.Repo)
+		allResults[repoKey] = analyzer.RepositoryResult{
+			Owner:    repo.Owner,
+			Repo:     repo.Repo,
+			PRCount:  len(prs),
+			Metrics:  metrics,
+			Analysis: result,
+		}
+
+		// -------------------------------------------------
+
+		vmMetrics := &vmdb.Metrics{}
+
+		vmMetrics.AddPRMetric("MergeRate", "gofish", result.MergeRate, uint64(time.Now().UnixMilli()))
+		vmMetrics.AddPRMetric("AverageTimeToFirstReview", "gofish", result.AverageTimeToFirstReview/time.Second, uint64(time.Now().UnixMilli()))
+		vmMetrics.AddPRMetric("MedianLifeTime", "gofish", result.MedianLifetime/time.Second, uint64(time.Now().UnixMilli()))
+
+		vmMetrics.AddPRMetric("MergeRate", "project1", result.MergeRate, uint64(time.Now().UnixMilli()))
+		vmMetrics.AddPRMetric("AverageTimeToFirstReview", "project1", result.AverageTimeToFirstReview/time.Second, uint64(time.Now().UnixMilli()))
+		vmMetrics.AddPRMetric("MedianLifeTime", "project1", result.MedianLifetime/time.Second, uint64(time.Now().UnixMilli()))
+
+		err = m.VMDBExporter.PushMetrics(vmMetrics)
+		if err != nil {
+			return fmt.Errorf("%w: %w", "xueta", err)
+		}
+
+		// -------------------------------------------------
+
+		// analyzer.PrintAnalysisResults(repo.Owner, repo.Repo, result)
+
+		if i < len(cfg.Repositories)-1 {
+			fmt.Printf("Waiting for the next repository...\n")
+			time.Sleep(2 * time.Second)
+		}
 	}
 
-	fmt.Printf("Found %d pull requests\n", len(prs))
+	// comparative := analyzer.ComparativeAnalysis(allResults)
 
-	if len(prs) == 0 {
-		fmt.Println("No PR was found for analysis.")
-		return errors.New("no PR found for analysis.")
-	}
+	// analyzer.PrintComparativeAnalysis(comparative)
 
-	metrics, err := analyzer.CollectPRMetrics(m.GithubClient, prs)
-	if err != nil {
-		log.Fatalf("Error when collecting metrics: %v", err)
-	}
-
-	result := analyzer.AnalyzeData(metrics)
-
-	vmMetrics := &vmdb.Metrics{}
-
-	vmMetrics.AddPRMetric("MergeRate", "gofish", result.MergeRate, uint64(time.Now().UnixMilli()))
-	vmMetrics.AddPRMetric("AverageTimeToFirstReview", "gofish", result.AverageTimeToFirstReview/time.Second, uint64(time.Now().UnixMilli()))
-	vmMetrics.AddPRMetric("MedianLifeTime", "gofish", result.MedianLifetime/time.Second, uint64(time.Now().UnixMilli()))
-
-	vmMetrics.AddPRMetric("MergeRate", "project1", result.MergeRate, uint64(time.Now().UnixMilli()))
-	vmMetrics.AddPRMetric("AverageTimeToFirstReview", "project1", result.AverageTimeToFirstReview/time.Second, uint64(time.Now().UnixMilli()))
-	vmMetrics.AddPRMetric("MedianLifeTime", "project1", result.MedianLifetime/time.Second, uint64(time.Now().UnixMilli()))
-
-	err = m.VMDBExporter.PushMetrics(vmMetrics)
-	if err != nil {
-		return fmt.Errorf("%w: %w", "xueta", err)
-	}
+	// if err := analyzer.SaveAllData(allResults); err != nil {
+	// 	log.Printf("Error saving data: %v", err)
+	// }
 
 	return nil
 }

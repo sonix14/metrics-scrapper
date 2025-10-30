@@ -12,13 +12,13 @@ type GitHubService interface {
 	GetComments(prNumber int) ([]IssueComment, error)
 }
 
-func (c *Client) GetAllPullRequests() ([]PullRequest, error) {
+func (c *Client) GetAllPullRequests(owner, repo string) ([]PullRequest, error) {
 	var allPRs []PullRequest
 	page := 1
 
 	for {
 		url := fmt.Sprintf("https://api.github.com/repos/%s/%s/pulls?state=all&page=%d&per_page=%d&sort=created&direction=desc",
-			c.config.Owner, c.config.Repo, page, c.config.PerPage)
+			owner, repo, page, c.config.PerPage)
 
 		fmt.Printf("Page Request %d...\n", page)
 
@@ -57,9 +57,9 @@ func (c *Client) GetAllPullRequests() ([]PullRequest, error) {
 	return allPRs, nil
 }
 
-func (c *Client) GetReviews(prNumber int) ([]Review, error) {
+func (c *Client) GetReviews(owner, repo string, prNumber int) ([]Review, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/pulls/%d/reviews",
-		c.config.Owner, c.config.Repo, prNumber)
+		owner, repo, prNumber)
 
 	req, err := c.createRequest(url)
 	if err != nil {
@@ -80,9 +80,9 @@ func (c *Client) GetReviews(prNumber int) ([]Review, error) {
 	return reviews, nil
 }
 
-func (c *Client) GetComments(prNumber int) ([]IssueComment, error) {
+func (c *Client) GetComments(owner, repo string, prNumber int) ([]IssueComment, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/issues/%d/comments",
-		c.config.Owner, c.config.Repo, prNumber)
+		owner, repo, prNumber)
 
 	req, err := c.createRequest(url)
 	if err != nil {
