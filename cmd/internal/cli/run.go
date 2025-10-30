@@ -2,7 +2,7 @@ package cli
 
 import (
 	_ "embed"
-	manager2 "metrics-scrapper/internal/manager"
+	manager "metrics-scrapper/internal/manager"
 	"metrics-scrapper/internal/vmdb"
 	"net/http"
 
@@ -58,7 +58,7 @@ func run(_ *cobra.Command) error {
 		"1y",
 	)
 
-	manager := manager2.NewMetricManager(exporter, client)
+	manager := manager.NewMetricManager(exporter, client)
 
 	err := manager.ScrapeAndPush(cfg)
 

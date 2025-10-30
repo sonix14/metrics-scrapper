@@ -5,6 +5,7 @@ import (
 )
 
 type PRMetrics struct {
+	Repository        string
 	PRNumber          int
 	Author            string
 	State             string
@@ -17,6 +18,14 @@ type PRMetrics struct {
 	Reviewers         []string
 	CommentsCount     int
 	IsMerged          bool
+}
+
+type RepositoryResult struct {
+	Owner    string
+	Repo     string
+	PRCount  int
+	Metrics  []PRMetrics
+	Analysis AnalysisResult
 }
 
 type AnalysisResult struct {
@@ -50,4 +59,24 @@ type AuthorReviewerPair struct {
 	Reviewer     string
 	Interactions int
 	AvgLifetime  time.Duration
+}
+
+type ComparativeAnalyser struct {
+	RepositoryResults map[string]RepositoryResult // key: "owner/repo"
+	Summary           SummaryStats
+}
+
+type SummaryStats struct {
+	TotalRepositories int
+	TotalPRs          int
+	TotalMergedPRs    int
+	AvgMergeRate      float64
+	BestPerforming    []RepoPerformance
+	WorstPerforming   []RepoPerformance
+}
+
+type RepoPerformance struct {
+	Repository string
+	MergeRate  float64
+	AvgTime    time.Duration
 }
