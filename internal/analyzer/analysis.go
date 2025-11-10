@@ -18,9 +18,13 @@ func AnalyzeData(metrics []PRMetrics) AnalysisResult {
 	mergedCount := 0
 	closedCount := 0
 
+	// Собираем данные только по смерженным PR для прогноза
+	var mergedLifetimes []time.Duration
+
 	for _, m := range metrics {
 		if m.IsMerged {
 			mergedCount++
+			mergedLifetimes = append(mergedLifetimes, m.TotalLifetime)
 		} else if m.State == "closed" {
 			closedCount++
 		}
@@ -49,9 +53,40 @@ func AnalyzeData(metrics []PRMetrics) AnalysisResult {
 		if len(lifetimes) > 0 {
 			result.MedianLifetime = calculateMedianDuration(lifetimes)
 		}
+
+		// Расчет прогнозного времени до мерджа
+		if len(mergedLifetimes) > 0 {
+			result.PredictedTimeToMerge = calculatePredictedMergeTime(mergedLifetimes, reviewTimes)
+		}
 	}
 
 	return result
+}
+
+// calculatePredictedMergeTime рассчитывает прогнозное время до мерджа
+// Используем взвешенную формулу: 70% медианного времени + 30% времени до первого ревью
+func calculatePredictedMergeTime(mergedLifetimes, reviewTimes []time.Duration) time.Duration {
+	if len(mergedLifetimes) == 0 {
+		return 0
+	}
+
+	// Медиана времени жизни смерженных PR
+	medianMergeTime := calculateMedianDuration(mergedLifetimes)
+
+	// Медиана времени до первого ревью (если есть данные)
+	var medianReviewTime time.Duration
+	if len(reviewTimes) > 0 {
+		medianReviewTime = calculateMedianDuration(reviewTimes)
+	} else {
+		// Если нет данных по ревью, используем 20% от общего времени как оценку
+		medianReviewTime = medianMergeTime / 5
+	}
+
+	// Взвешенный прогноз: учитываем и общее время, и время до первого ответа
+	// Формула: 70% от медианы времени мержа + 30% от медианы времени первого ревью
+	predicted := time.Duration(float64(medianMergeTime)*0.7 + float64(medianReviewTime)*0.3)
+
+	return predicted
 }
 
 func calculateMedianDuration(durations []time.Duration) time.Duration {

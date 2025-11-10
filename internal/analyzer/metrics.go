@@ -37,6 +37,7 @@ type AnalysisResult struct {
 	AverageTimeToFirstReview time.Duration
 	MedianLifetime           time.Duration
 	MedianTimeToFirstReview  time.Duration
+	PredictedTimeToMerge     time.Duration
 	PRMetrics                []PRMetrics
 }
 

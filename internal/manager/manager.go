@@ -71,13 +71,17 @@ func (m *MetricManager) ScrapeAndPush(cfg *config.Config) error {
 
 		vmMetrics := &vmdb.Metrics{}
 
-		vmMetrics.AddPRMetric("MergeRate", "gofish", result.MergeRate, uint64(time.Now().UnixMilli()))
-		vmMetrics.AddPRMetric("AverageTimeToFirstReview", "gofish", result.AverageTimeToFirstReview/time.Second, uint64(time.Now().UnixMilli()))
-		vmMetrics.AddPRMetric("MedianLifeTime", "gofish", result.MedianLifetime/time.Second, uint64(time.Now().UnixMilli()))
+		// 1. Общее время жизни PR
+		vmMetrics.AddPRMetric("PRLifetime", repoKey, result.MedianLifetime/time.Second, uint64(time.Now().UnixMilli()))
 
-		vmMetrics.AddPRMetric("MergeRate", "project1", result.MergeRate, uint64(time.Now().UnixMilli()))
-		vmMetrics.AddPRMetric("AverageTimeToFirstReview", "project1", result.AverageTimeToFirstReview/time.Second, uint64(time.Now().UnixMilli()))
-		vmMetrics.AddPRMetric("MedianLifeTime", "project1", result.MedianLifetime/time.Second, uint64(time.Now().UnixMilli()))
+		// 2. Время до первого ответа
+		vmMetrics.AddPRMetric("TimeToFirstReview", repoKey, result.AverageTimeToFirstReview/time.Second, uint64(time.Now().UnixMilli()))
+
+		// 3. Процент успешных мержей
+		vmMetrics.AddPRMetric("MergeSuccessRate", repoKey, result.MergeRate, uint64(time.Now().UnixMilli()))
+
+		// 4. Прогнозное время до мержа нового PR
+		vmMetrics.AddPRMetric("PredictedMergeTime", repoKey, result.PredictedTimeToMerge/time.Second, uint64(time.Now().UnixMilli()))
 
 		err = m.VMDBExporter.PushMetrics(vmMetrics)
 		if err != nil {
