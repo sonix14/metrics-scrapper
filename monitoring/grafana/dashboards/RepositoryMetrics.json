@@ -83,11 +83,11 @@
       "pluginVersion": "11.3.0",
       "targets": [
         {
-          "expr": "MergeRate{repo=\"$repo\"}",
+          "expr": "MergeSuccessRate{repo=\"$repo\"}",
           "refId": "A"
         }
       ],
-      "title": "Merge Rate (%)",
+      "title": "PR Merge Rate (%)",
       "type": "stat"
     },
     {
@@ -124,8 +124,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 15,
-        "w": 10,
+        "h": 5,
+        "w": 15,
         "x": 9,
         "y": 0
       },
@@ -150,11 +150,11 @@
       "pluginVersion": "11.3.0",
       "targets": [
         {
-          "expr": "MedianLifeTime{repo=\"$repo\"}",
+          "expr": "PRLifetime{repo=\"$repo\"}",
           "refId": "C"
         }
       ],
-      "title": "Median Lifetime (s)",
+      "title": "PR Median Lifetime (s)",
       "type": "stat"
     },
     {
@@ -191,7 +191,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 16,
         "w": 9,
         "x": 0,
         "y": 5
@@ -217,11 +217,78 @@
       "pluginVersion": "11.3.0",
       "targets": [
         {
-          "expr": "AverageTimeToFirstReview{repo=\"$repo\"}",
+          "expr": "TimeToFirstReview{repo=\"$repo\"}",
           "refId": "B"
         }
       ],
       "title": "Average Time to First Review (s)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "VictoriaMetrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 500
+              },
+              {
+                "color": "red",
+                "value": 1200
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 15,
+        "x": 9,
+        "y": 5
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "expr": "PredictedMergeTime{repo=\"$repo\"}",
+          "refId": "D"
+        }
+      ],
+      "title": "Predicted Merge Time (s)",
       "type": "stat"
     }
   ],
@@ -240,11 +307,11 @@
           "type": "prometheus",
           "uid": "VictoriaMetrics"
         },
-        "definition": "label_values(MergeRate, repo)",
+        "definition": "label_values(MergeSuccessRate, repo)",
         "includeAll": false,
         "name": "repo",
         "options": [],
-        "query": "label_values(MergeRate, repo)",
+        "query": "label_values(MergeSuccessRate, repo)",
         "refresh": 2,
         "regex": "",
         "sort": 1,
