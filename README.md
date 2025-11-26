@@ -1,16 +1,41 @@
 # metrics-scrapper
-This is an opensource project for "Data Science and Big Data Analytics" subject in SPbSTU. It is meant for scrapping data from opensource GitHub projects and create metrics based on contribution to them.
+Это opensource проект по предмету "Наука о данных и аналитика больших данных" в СПбПУ.
+Проект предназначен для сбора данных из opensource проектов на GitHub и создания метрик на основе вклада в них.
 
-## Project launch
-To start the application in docker, you need to enter the command in the terminal:
 
+## Запуск проекта
+
+### Быстрый запуск (рекомендуется)
+
+Создайте файл `.env` в корне проекта и добавьте ваш GitHub Token:
 ```bash
-docker compose up -d
+echo "GITHUB_TOKEN=ghp_ваш_токен_здесь" > .env
 ```
 
-To start project locally, run the following commands:
-
+ИЛИ установите переменную окружения:
 ```bash
-/metrics-scrapper$ make build
-/metrics-scrapper$ ./bin/mertics-scrapper run
+export GITHUB_TOKEN=ghp_ваш_токен_здесь
 ```
+
+Запустите все одной командой:
+```bash
+./scripts/run-all.sh
+```
+
+### Что происходит при запуске:
+
+1. **Запускается инфраструктура:**
+    - VictoriaMetrics (база данных для метрик) - http://localhost:8428
+    - Grafana (визуализация метрик) - http://localhost:3000
+
+2. **Собирается и запускается Go сервис:**
+    - Собирается контейнер с metrics-scrapper
+    - Запускается сбор метрик с GitHub
+    - Метрики отправляются в VictoriaMetrics
+    - Сервис завершает работу после выполнения
+
+3. **После выполнения:**
+    - Инфраструктура продолжает работать
+    - Можно просматривать метрики в Grafana
+    - Можно повторно запустить сбор метрик
+
