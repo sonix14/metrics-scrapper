@@ -44,7 +44,7 @@ func run(_ *cobra.Command) error {
 	var vmdbURLProvider vmdb.URLProvider
 
 	vmdbURLProvider = &vmdb.SingleNodeURL{
-		VMURL: "http://localhost:8428",
+		VMURL: "http://ms-victoria-metrics:8428",
 	}
 
 	logger := slog.Default()
